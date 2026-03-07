@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Email Scraper</title>
+</head>
+
+<body>
+
+<h2>Email Scraper</h2>
+
+<form method="POST">
+    <input type="text" name="url" placeholder="Enter website URL" required>
+    <button type="submit">Find Emails</button>
+</form>
+
+<br>
+
+{% if emails %}
+<h3>Emails Found:</h3>
+<ul>
+{% for email in emails %}
+<li>{{ email }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+</body>
+</html>
