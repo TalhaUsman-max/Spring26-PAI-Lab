@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Weather Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+
+body{
+    font-family: Arial;
+    background: linear-gradient(135deg,#74ebd5,#ACB6E5);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.card{
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    width:350px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,0.2);
+}
+
+input{
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+    border-radius:10px;
+    border:1px solid #ccc;
+}
+
+button{
+    width:100%;
+    padding:10px;
+    border:none;
+    border-radius:10px;
+    background:#74ebd5;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#4ac1c0;
+}
+
+.result{
+    margin-top:20px;
+    display:none;
+}
+
+</style>
+</head>
+<body>
+
+<div class="card">
+
+<h2>🌤 Weather Dashboard</h2>
+
+<input type="text" id="city" placeholder="Enter City">
+<button onclick="getWeather()">Get Weather</button>
+
+<div id="result" class="result">
+<h3 id="location"></h3>
+<img id="icon">
+<p id="temp"></p>
+<p id="desc"></p>
+<p id="humidity"></p>
+<p id="wind"></p>
+</div>
+
+</div>
+
+<script>
+
+async function getWeather(){
+
+    const city = document.getElementById("city").value;
+
+    const response = await fetch("/api/weather",{
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({ city: city })
+    });
+
+    const data = await response.json();
+
+    if(!data.success){
+        alert(data.error);
+        return;
+    }
+
+    document.getElementById("result").style.display="block";
+
+    document.getElementById("location").innerText =
+        data.data.city + ", " + data.data.country;
+
+    document.getElementById("temp").innerText =
+        "Temperature: " + data.data.temperature + "°C";
+
+    document.getElementById("desc").innerText =
+        data.data.description;
+
+    document.getElementById("humidity").innerText =
+        "Humidity: " + data.data.humidity + "%";
+
+    document.getElementById("wind").innerText =
+        "Wind: " + data.data.wind_speed + " m/s";
+
+    document.getElementById("icon").src =
+        "https://openweathermap.org/img/wn/" +
+        data.data.icon + "@2x.png";
+}
+
+</script>
+
+</body>
+</html>
