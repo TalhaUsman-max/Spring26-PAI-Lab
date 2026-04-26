@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Quiz Generator - Golden Edition</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="background">
+        <div class="stars"></div>
+        <div class="glitter"></div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="ai-badge">✨ AI Powered</div>
+            <h1>AI Quiz Generator</h1>
+            <p class="subtitle">Create intelligent quizzes on any topic with advanced AI technology</p>
+            <div class="divider"></div>
+        </div>
+    </header>
+
+    <!-- Progress Indicator -->
+    <div class="progress-container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-steps">
+            <div class="step-indicator active" data-step="1">
+                <div class="step-number">1</div>
+                <div class="step-label">Topic</div>
+            </div>
+            <div class="step-indicator" data-step="2">
+                <div class="step-number">2</div>
+                <div class="step-label">Difficulty</div>
+            </div>
+            <div class="step-indicator" data-step="3">
+                <div class="step-number">3</div>
+                <div class="step-label">Questions</div>
+            </div>
+            <div class="step-indicator" data-step="4">
+                <div class="step-number">4</div>
+                <div class="step-label">Quiz</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Step 1: Topic Selection -->
+        <div class="step active" id="step1">
+            <div class="step-header">
+                <h2>Choose Your Topic</h2>
+                <p class="step-description">Enter any topic you want to create a quiz about. Our AI will generate intelligent questions for you.</p>
+            </div>
+
+            <div class="input-container">
+                <div class="input-wrapper">
+                    <input type="text" id="topicInput" placeholder="e.g., World History, Python Programming, Climate Change..." maxlength="100">
+                    <button class="primary-btn" id="validateBtn">
+                        <span>Validate</span>
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div id="messageContainer"></div>
+            </div>
+
+            <div class="suggestions-section">
+                <h3>Popular Topics</h3>
+                <div class="topic-chips">
+                    <div class="chip" data-topic="Python Programming">🐍 Python Programming</div>
+                    <div class="chip" data-topic="World History">🏛️ World History</div>
+                    <div class="chip" data-topic="Climate Change">🌍 Climate Change</div>
+                    <div class="chip" data-topic="Artificial Intelligence">🤖 Artificial Intelligence</div>
+                    <div class="chip" data-topic="Space Exploration">🚀 Space Exploration</div>
+                    <div class="chip" data-topic="Psychology">🧠 Psychology</div>
+                    <div class="chip" data-topic="Chemistry">⚗️ Chemistry</div>
+                    <div class="chip" data-topic="Literature">📚 Literature</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Difficulty Selection -->
+        <div class="step" id="step2">
+            <div class="step-header">
+                <h2>Select Difficulty Level</h2>
+                <p class="step-description">Choose the difficulty level that matches your knowledge and learning goals.</p>
+            </div>
+
+            <div class="topic-display" id="topicDisplay"></div>
+
+            <div class="difficulty-options">
+                <div class="difficulty-card" data-difficulty="easy">
+                    <div class="difficulty-icon">🌱</div>
+                    <div class="difficulty-content">
+                        <h3>Easy</h3>
+                        <p>Perfect for beginners. Basic concepts and straightforward questions.</p>
+                    </div>
+                    <div class="difficulty-indicator"></div>
+                </div>
+
+                <div class="difficulty-card" data-difficulty="medium">
+                    <div class="difficulty-icon">⚖️</div>
+                    <div class="difficulty-content">
+                        <h3>Medium</h3>
+                        <p>Balanced challenge. Good mix of concepts and practical application.</p>
+                    </div>
+                    <div class="difficulty-indicator"></div>
+                </div>
+
+                <div class="difficulty-card" data-difficulty="hard">
+                    <div class="difficulty-icon">🔥</div>
+                    <div class="difficulty-content">
+                        <h3>Hard</h3>
+                        <p>Advanced level. Complex scenarios and in-depth knowledge required.</p>
+                    </div>
+                    <div class="difficulty-indicator"></div>
+                </div>
+            </div>
+
+            <div class="back-btn">
+                <button class="secondary-btn" id="backToStep1">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                    </svg>
+                    Back to Topic
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 3: Question Count Selection -->
+        <div class="step" id="step3">
+            <div class="step-header">
+                <h2>How Many Questions?</h2>
+                <p class="step-description">Select the number of questions for your quiz. More questions provide better assessment.</p>
+            </div>
+
+            <div class="topic-display" id="topicDisplayStep3"></div>
+
+            <div class="question-count-grid">
+                <div class="count-card" data-count="5">
+                    <div class="count-number">5</div>
+                    <div class="count-label">Quick Quiz</div>
+                </div>
+                <div class="count-card" data-count="10">
+                    <div class="count-number">10</div>
+                    <div class="count-label">Standard Quiz</div>
+                </div>
+                <div class="count-card selected" data-count="15">
+                    <div class="count-number">15</div>
+                    <div class="count-label">Comprehensive</div>
+                </div>
+                <div class="count-card" data-count="20">
+                    <div class="count-number">20</div>
+                    <div class="count-label">Expert Level</div>
+                </div>
+            </div>
+
+            <div class="back-btn">
+                <button class="secondary-btn" id="backToStep2">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                    </svg>
+                    Back to Difficulty
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 4: Quiz Generation -->
+        <div class="step" id="step4">
+            <div class="step-header">
+                <h2>Generating Your Quiz</h2>
+                <p class="step-description">Our AI is creating intelligent questions tailored to your preferences. This may take a few moments.</p>
+            </div>
+
+            <div class="topic-display" id="topicDisplayStep4"></div>
+
+            <div class="input-container">
+                <div class="message-box loading">
+                    <div class="spinner"></div>
+                    <span>AI is generating your personalized quiz...</span>
+                </div>
+            </div>
+
+            <div class="back-btn">
+                <button class="secondary-btn" id="backToStep3">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                    </svg>
+                    Back to Questions
+                </button>
+            </div>
+        </div>
+
+        <!-- Quiz Interface -->
+        <div class="step" id="quizStep">
+            <div class="quiz-header">
+                <div class="quiz-info" id="quizInfo">Quiz: Loading...</div>
+                <div class="progress-indicator" id="quizProgress">Question 1 of 10</div>
+            </div>
+
+            <div class="questions-container" id="questionsContainer">
+                <!-- Questions will be dynamically inserted here -->
+            </div>
+
+            <div class="quiz-actions">
+                <button class="secondary-btn" id="prevQuestion" disabled>
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 0 .708-.708z"/>
+                    </svg>
+                    Previous
+                </button>
+                <button class="primary-btn" id="nextQuestion">
+                    Next
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                    </svg>
+                </button>
+                <button class="success-btn hidden" id="finishQuiz">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.5.5 0 1 0-.708.708l2.094-2.093 3.473 4.425z"/>
+                    </svg>
+                    Finish Quiz
+                </button>
+            </div>
+        </div>
+
+        <!-- Results Page -->
+        <div class="step" id="resultsStep">
+            <div class="results-container">
+                <div class="results-header">
+                    <div class="celebration">🎉</div>
+                    <h2>Quiz Complete!</h2>
+                    <div class="final-score" id="finalScore">0%</div>
+                    <div class="score-percentage" id="scorePercentage"></div>
+                    <div class="grade-badge" id="gradeBadge">Grade</div>
+                    <div class="quiz-summary" id="quizSummary"></div>
+                </div>
+
+                <div class="results-breakdown">
+                    <h3>Question Breakdown</h3>
+                    <div class="breakdown-list" id="breakdownList">
+                        <!-- Breakdown items will be inserted here -->
+                    </div>
+                </div>
+
+                <div class="results-actions">
+                    <button class="secondary-btn" id="retakeQuiz">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                        </svg>
+                        Take Another Quiz
+                    </button>
+                    <button class="primary-btn" id="newTopic">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                        </svg>
+                        New Topic
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='quiz.js') }}"></script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Quiz Generator - Smart Learning Tool</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Animated Background -->
+  <div class="background">
+    <div class="stars"></div>
+    <div class="glitter"></div>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-content">
+      <div class="ai-badge">✨ AI POWERED</div>
+      <h1>QUIZ GENERATOR</h1>
+      <div class="subtitle">Create intelligent quizzes with AI</div>
+      <div class="divider"></div>
+    </div>
+  </header>
+
+  <!-- PROGRESS INDICATOR -->
+  <div class="progress-container">
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-steps">
+      <div class="step-indicator active" data-step="1">
+        <span class="step-number">1</span>
+        <span class="step-label">Topic</span>
+      </div>
+      <div class="step-indicator" data-step="2">
+        <span class="step-number">2</span>
+        <span class="step-label">Level</span>
+      </div>
+      <div class="step-indicator" data-step="3">
+        <span class="step-number">3</span>
+        <span class="step-label">Questions</span>
+      </div>
+      <div class="step-indicator" data-step="4">
+        <span class="step-number">4</span>
+        <span class="step-label">Quiz</span>
+      </div>
+      <div class="step-indicator" data-step="5">
+        <span class="step-number">5</span>
+        <span class="step-label">Results</span>
+      </div>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- STEP 1: TOPIC SELECTION -->
+    <section class="step active" id="stepTopic">
+      <div class="step-header">
+        <h2>Choose Your Topic</h2>
+        <p class="step-description">Enter any subject and our AI will validate it for you</p>
+      </div>
+
+      <div class="input-container">
+        <div class="input-wrapper">
+          <input
+            type="text"
+            id="topicInput"
+            placeholder="e.g., React Hooks, Binary Trees, SQL, Newton's Laws..."
+            autocomplete="off"
+          />
+          <button id="btnValidate" class="primary-btn">
+            <span>Validate Topic</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="message-box error hidden" id="topicError"></div>
+        <div class="message-box loading hidden" id="topicLoading">
+          <div class="spinner"></div>
+          <span>AI is validating your topic...</span>
+        </div>
+      </div>
+
+      <div class="suggestions-section">
+        <h3>Popular Topics</h3>
+        <div class="topic-chips">
+          <button class="chip" data-topic="Frontend Development">🖥️ Frontend</button>
+          <button class="chip" data-topic="Backend Development">⚙️ Backend</button>
+          <button class="chip" data-topic="Python Programming">🐍 Python</button>
+          <button class="chip" data-topic="Object Oriented Programming">🔷 OOP</button>
+          <button class="chip" data-topic="Data Structures & Algorithms">📊 DSA</button>
+          <button class="chip" data-topic="Machine Learning">🤖 ML</button>
+          <button class="chip" data-topic="Computer Networking">🌐 Networking</button>
+          <button class="chip" data-topic="Database Management">🗄️ Database</button>
+          <button class="chip" data-topic="DevOps">🔧 DevOps</button>
+          <button class="chip" data-topic="Cybersecurity">🔐 Security</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 2: DIFFICULTY LEVEL -->
+    <section class="step hidden" id="stepDifficulty">
+      <div class="topic-display" id="topicBadge"></div>
+
+      <div class="step-header">
+        <h2>Select Difficulty</h2>
+        <p class="step-description">Choose the challenge level that suits you</p>
+      </div>
+
+      <div class="difficulty-options">
+        <button class="difficulty-card" data-diff="easy">
+          <div class="difficulty-icon">🟢</div>
+          <div class="difficulty-content">
+            <h3>Easy</h3>
+            <p>Perfect for beginners and fundamentals</p>
+          </div>
+          <div class="difficulty-indicator"></div>
+        </button>
+
+        <button class="difficulty-card" data-diff="medium">
+          <div class="difficulty-icon">🟡</div>
+          <div class="difficulty-content">
+            <h3>Medium</h3>
+            <p>Requires some experience and knowledge</p>
+          </div>
+          <div class="difficulty-indicator"></div>
+        </button>
+
+        <button class="difficulty-card" data-diff="hard">
+          <div class="difficulty-icon">🔴</div>
+          <div class="difficulty-content">
+            <h3>Hard</h3>
+            <p>Expert level - think carefully!</p>
+          </div>
+          <div class="difficulty-indicator"></div>
+        </button>
+      </div>
+
+      <button class="secondary-btn back-btn" onclick="goToStep(0)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Change Topic
+      </button>
+    </section>
+
+    <!-- STEP 3: QUESTION COUNT -->
+    <section class="step hidden" id="stepCount">
+      <div class="quiz-preview" id="metaInfo"></div>
+
+      <div class="step-header">
+        <h2>How Many Questions?</h2>
+        <p class="step-description">Select the number of questions for your quiz</p>
+      </div>
+
+      <div class="question-count-grid">
+        <button class="count-card" data-n="5">
+          <span class="count-number">5</span>
+          <span class="count-label">Quick Quiz</span>
+        </button>
+        <button class="count-card" data-n="10">
+          <span class="count-number">10</span>
+          <span class="count-label">Standard</span>
+        </button>
+        <button class="count-card" data-n="15">
+          <span class="count-number">15</span>
+          <span class="count-label">Extended</span>
+        </button>
+        <button class="count-card" data-n="20">
+          <span class="count-number">20</span>
+          <span class="count-label">Challenge</span>
+        </button>
+      </div>
+
+      <button class="primary-btn hidden" id="btnGenerate">
+        <span>Generate Quiz</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+      <div class="message-box loading hidden" id="genLoading">
+        <div class="spinner"></div>
+        <span id="genLoadingText">AI is creating your questions...</span>
+      </div>
+
+      <div class="message-box error hidden" id="genError"></div>
+
+      <button class="secondary-btn back-btn" onclick="goToStep(1)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Change Level
+      </button>
+    </section>
+
+    <!-- STEP 4: QUIZ INTERFACE -->
+    <section class="step hidden" id="stepQuiz">
+      <div class="quiz-header">
+        <div class="quiz-info" id="quizMeta"></div>
+        <div class="progress-indicator" id="quizProgress">0/0 answered</div>
+      </div>
+
+      <div id="questionsContainer" class="questions-container"></div>
+
+      <div class="message-box error hidden" id="quizError"></div>
+
+      <div class="quiz-actions">
+        <button class="primary-btn" id="btnSubmit">
+          <span>Submit Quiz</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button class="success-btn hidden" id="btnResult">
+          <span>View Results</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- STEP 5: RESULTS -->
+    <section class="step hidden" id="stepResult">
+      <div class="results-container">
+        <div class="results-header">
+          <div class="celebration">🎉</div>
+          <h2>Quiz Complete!</h2>
+          <div class="final-score" id="resultScore">0/0</div>
+          <div class="score-percentage" id="resultPercent">0% Correct</div>
+          <div class="grade-badge" id="resultGrade">Grade</div>
+          <div class="quiz-summary" id="resultMeta"></div>
+        </div>
+
+        <div class="results-breakdown">
+          <h3>Question Review</h3>
+          <div id="breakdown" class="breakdown-list"></div>
+        </div>
+
+        <div class="results-actions">
+          <button class="secondary-btn" onclick="goToStep(3)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Review Answers
+          </button>
+          <button class="primary-btn" onclick="resetAll()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            New Quiz
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="{{ url_for('static', filename='quiz.js') }}"></script>
+</body>
+</html>
