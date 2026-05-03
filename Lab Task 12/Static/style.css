@@ -1,0 +1,213 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --bg-1: #0b1220;
+    --bg-2: #111a2e;
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+    --text: #e5e7eb;
+    --muted: rgba(255,255,255,0.6);
+    --glass: rgba(255,255,255,0.06);
+    --border: rgba(255,255,255,0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    background: radial-gradient(circle at top, var(--bg-2), var(--bg-1));
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* ===== Background Glow (Simplified for Performance) ===== */
+.background-shapes {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.shape {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+}
+
+.shape-1 {
+    width: 400px;
+    height: 400px;
+    background: #6366f1;
+    top: -100px;
+    left: -100px;
+}
+
+.shape-2 {
+    width: 350px;
+    height: 350px;
+    background: #ec4899;
+    bottom: -120px;
+    right: -120px;
+}
+
+.shape-3 {
+    width: 300px;
+    height: 300px;
+    background: #06b6d4;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* ===== Chat Container ===== */
+.chat-container {
+    width: 420px;
+    height: 680px;
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    backdrop-filter: blur(18px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 2;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.45);
+}
+
+/* ===== Header ===== */
+.chat-header {
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,0.03);
+}
+
+.avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary), #8b5cf6);
+}
+
+.header-info h1 {
+    font-size: 15px;
+    color: white;
+    font-weight: 600;
+}
+
+.header-info p {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+/* ===== Messages ===== */
+.chat-messages {
+    flex: 1;
+    padding: 14px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Scrollbar minimal */
+.chat-messages::-webkit-scrollbar {
+    width: 5px;
+}
+.chat-messages::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.15);
+    border-radius: 10px;
+}
+
+.message {
+    max-width: 80%;
+    animation: fade 0.2s ease;
+}
+
+@keyframes fade {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* User */
+.user-message {
+    align-self: flex-end;
+}
+
+.user-message .message-content {
+    background: var(--primary);
+    color: white;
+    padding: 10px 12px;
+    border-radius: 14px 14px 4px 14px;
+    font-size: 13px;
+}
+
+/* Bot */
+.bot-message {
+    align-self: flex-start;
+}
+
+.bot-message .message-content {
+    background: rgba(255,255,255,0.08);
+    color: var(--text);
+    padding: 10px 12px;
+    border-radius: 14px 14px 14px 4px;
+    font-size: 13px;
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* ===== Input ===== */
+.chat-input-container {
+    padding: 12px;
+    border-top: 1px solid var(--border);
+    background: rgba(0,0,0,0.2);
+}
+
+.input-wrapper {
+    display: flex;
+    gap: 8px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    padding: 6px;
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.input-wrapper input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: white;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.input-wrapper input::placeholder {
+    color: rgba(255,255,255,0.4);
+}
+
+.send-btn {
+    background: var(--primary);
+    border: none;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.send-btn:hover {
+    background: var(--primary-dark);
+    transform: scale(1.05);
+}
